@@ -1,0 +1,26 @@
+body {
+  font-family: "PT Sans", sans-serif;
+  text-align: center;
+  background: #fdfdfd;
+  margin: 0;
+  padding: 0;
+}
+
+header {
+  background: #f8f0f8;
+  padding: 20px;
+}
+
+.gallery {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.gallery img {
+  width: 200px;
+  margin: 10px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}

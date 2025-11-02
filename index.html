@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ishmael weds Priscilla 💜</title>
+  <style>
+    body {
+      font-family: 'PT Sans', sans-serif;
+      background: #f5f5f5;
+      text-align: center;
+      padding: 20px;
+    }
+    h1 { font-family: 'Playfair Display', serif; color: #6a5acd; }
+    #gallery img {
+      width: 150px;
+      border-radius: 10px;
+      margin: 5px;
+      transition: transform 0.2s ease;
+    }
+    #gallery img:hover { transform: scale(1.05); }
+  </style>
+</head>
+<body>
+  <h1>Ishmael weds Priscilla 💜</h1>
+  <p>Share your memories with us!</p>
+
+  <input type="file" id="photoInput" accept="image/*">
+  <button onclick="uploadPhoto()">Upload Photo</button>
+
+  <p id="status"></p>
+
+  <div id="gallery"></div>
+
+  <script>
+    const CLOUD_NAME = "dczy2uhat"; // 👈 replace with yours
+    const UPLOAD_PRESET = "wedding_photos"; // 👈 your unsigned preset
+
+    async function uploadPhoto() {
+      const file = document.getElementById("photoInput").files[0];
+      if (!file) return alert("Please select a photo!");
+
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("upload_preset", UPLOAD_PRESET);
+
+      document.getElementById("status").innerText = "Uploading...";
+
+      const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`, {
+        method: "POST",
+        body: formData
+      });
+      const data = await res.json();
+
+      document.getElementById("status").innerText = "Upload complete!";
+      addToGallery(data.secure_url);
+    }
+
+    function addToGallery(url) {
+      const img = document.createElement("img");
+      img.src = url;
+      document.getElementById("gallery").prepend(img);
+
+      // Optional: Save URLs in localStorage (so they persist)
+      const stored = JSON.parse(localStorage.getItem("photos") || "[]");
+      stored.push(url);
+      localStorage.setItem("photos", JSON.stringify(stored));
+    }
+
+    // Load saved images from localStorage
+    window.onload = () => {
+      const saved = JSON.parse(localStorage.getItem("photos") || "[]");
+      saved.forEach(url => addToGallery(url));
+    };
+  </script>
+</body>
+</html>
